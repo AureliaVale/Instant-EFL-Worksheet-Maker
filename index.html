@@ -3,428 +3,268 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Instant EFL Worksheet Maker</title>
+<title>Instant EFL Worksheet Maker — Year 1</title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f4f6f8;
-    margin: 0;
-    padding: 20px;
-    color: #222;
-  }
-
-  .container {
-    max-width: 850px;
-    margin: auto;
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  }
-
-  h1 {
-    color: #1a5276;
-    margin-bottom: 5px;
-  }
-
-  .subtitle {
-    color: #555;
-    margin-top: 0;
-  }
-
-  label {
-    display: block;
-    font-weight: bold;
-    margin-top: 15px;
-  }
-
-  select, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 15px;
-  }
-
-  textarea {
-    min-height: 160px;
-  }
-
-  button {
-    margin-top: 20px;
-    background: #1a5276;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background: #154360;
-  }
-
-  #worksheet {
-    display: none;
-    margin-top: 30px;
-    border-top: 3px solid #1a5276;
-    padding-top: 20px;
-  }
-
-  .section {
-    margin-bottom: 25px;
-  }
-
-  .section h2 {
-    color: #1a5276;
-    font-size: 18px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 5px;
-  }
-
-  ol, ul {
-    padding-left: 22px;
-  }
-
-  .gap {
-    display: inline-block;
-    min-width: 100px;
-    border-bottom: 1px solid #333;
-  }
-
-  .writing-box {
-    border: 1px dashed #888;
-    min-height: 160px;
-    margin-top: 10px;
-  }
-
-  .footer {
-    margin-top: 30px;
-    font-size: 12px;
-    color: #666;
-    text-align: center;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
-  }
-
-  @media print {
-    body {
-      background: white;
-      padding: 0;
-    }
-
-    .container {
-      box-shadow: none;
-      padding: 0;
-    }
-
-    .no-print {
-      display: none;
-    }
-
-    #worksheet {
-      display: block !important;
-    }
-  }
+body{font-family:Arial,sans-serif;background:#f4f6f8;margin:0;padding:20px;color:#222}
+.container{max-width:850px;margin:0 auto 20px;background:#fff;padding:25px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+h1{color:#1a5276;margin-bottom:5px}.subtitle{color:#555;margin-top:0}
+label{display:block;font-weight:bold;margin-top:15px}
+select,textarea,input[type=text]{width:100%;box-sizing:border-box;padding:10px;margin-top:5px;border:1px solid #ccc;border-radius:6px;font-size:15px}
+textarea{min-height:160px}
+.row{display:flex;gap:12px;flex-wrap:wrap}.row>div{flex:1;min-width:170px}
+.chk{display:flex;align-items:center;gap:8px;font-weight:normal}.chk input{width:auto;margin:0}
+button{margin:20px 8px 0 0;background:#1a5276;color:#fff;border:none;padding:12px 20px;font-size:16px;border-radius:6px;cursor:pointer}
+button:hover{background:#154360}button.alt{background:#fff;color:#1a5276;border:2px solid #1a5276}
+.hint{font-size:13px;color:#666}
+#worksheet{display:none}
+#sheet{line-height:1.5}
+.head{display:flex;justify-content:space-between;gap:10px;border-bottom:2px solid #1a5276;padding-bottom:8px;font-size:14px}
+.title{text-align:center;color:#1a5276;margin:12px 0 4px}.focus{text-align:center;font-size:13px;color:#555;margin:0 0 14px}
+.section{margin-bottom:18px}
+.part{background:#1a5276;color:#fff;padding:5px 10px;border-radius:4px;font-size:16px;margin:18px 0 8px}
+.section h2{color:#1a5276;font-size:16px;border-bottom:1px solid #ddd;padding-bottom:4px;margin:14px 0 6px}
+.pts{float:right;font-weight:normal;color:#555;font-size:14px}
+.text p{text-align:justify;margin:6px 0}
+table{border-collapse:collapse;width:100%;margin:6px 0}th,td{border:1px solid #444;padding:6px 8px;text-align:left;font-size:14px}td.tall{height:60px}
+.gap{display:inline-block;min-width:90px;border-bottom:1px solid #333}
+.line{border-bottom:1px dotted #777;height:26px}
+.key{border-top:3px solid #1a5276;margin-top:26px;padding-top:10px;font-size:14px;background:#f9fbfc}
+.key h2{color:#1a5276}.note{font-size:12px;color:#8a5a00}
+.footer{margin-top:24px;font-size:12px;color:#666;text-align:center;border-top:1px solid #eee;padding-top:8px}
+@media print{body{background:#fff;padding:0}.container{box-shadow:none;padding:0;margin:0}.no-print{display:none!important}#worksheet{display:block!important}.key{page-break-before:always}.part{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
 <body>
 
 <div class="container no-print">
   <h1>Instant EFL Worksheet Maker</h1>
-  <p class="subtitle">Paste any English text. Choose a level. Get a printable EFL worksheet.</p>
+  <p class="subtitle">Secondary Education Year 1 — paste a text, choose the stream, term, and level, then generate an exam-style worksheet with a teacher’s answer key.</p>
 
-  <label for="level">Choose level</label>
-  <select id="level">
-    <option value="easy">Easy — A1/A2</option>
-    <option value="medium">Medium — A2/B1</option>
-    <option value="hard">Hard — B1/B2</option>
-  </select>
+  <div class="row">
+    <div><label for="stream">Stream</label>
+      <select id="stream"><option value="lit">Literary (آداب)</option><option value="sci">Scientific &amp; Technological (علوم وتكنولوجيا)</option></select></div>
+    <div><label for="year">Year</label>
+      <select id="year"><option value="1">1st year (SE1)</option></select></div>
+    <div><label for="term">Term</label>
+      <select id="term"><option value="1">Term 1</option><option value="2">Term 2</option><option value="3">Term 3</option></select></div>
+    <div><label for="level">Level</label>
+      <select id="level"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Advanced</option></select></div>
+    <div><label for="act">Text activity</label>
+      <select id="act"><option value="gap">Gap-filling paragraph</option><option value="order">Ordering sentences</option></select></div>
+  </div>
+  <p class="hint" id="unitHint"></p>
 
-  <label for="text">Paste your English text</label>
-  <textarea id="text" placeholder="Paste a short reading text, story, dialogue, or lesson passage here..."></textarea>
+  <label for="school">School name (optional)</label>
+  <input type="text" id="school" placeholder="Lycée ...">
 
-  <button onclick="makeWorksheet()">Create Worksheet</button>
-  <button onclick="window.print()">Print / Save as PDF</button>
+  <label for="text">Paste your English text (separate paragraphs with a blank line)</label>
+  <p class="hint">For best results, use a descriptive or informative text of 120–200 words (not a dialogue).</p>
+  <textarea id="text" placeholder="Paste a reading text that fits the unit(s) of the chosen term..."></textarea>
+
+  <label class="chk"><input type="checkbox" id="withKey" checked> Include the teacher's answer key (on a separate page when printed)</label>
+  <button onclick="makeWorksheet()">Generate worksheet</button>
 </div>
 
 <div id="worksheet" class="container">
-  <h1>EFL Worksheet</h1>
-  <p><strong>Level:</strong> <span id="outLevel"></span></p>
-  <p><strong>Name:</strong> ____________________________ &nbsp;&nbsp; <strong>Date:</strong> ______________</p>
-
-  <div class="section">
-    <h2>Reading Text</h2>
-    <p id="outText"></p>
+  <div class="no-print">
+    <button class="alt" style="margin-top:0" onclick="window.print()">Print / Save as PDF</button>
+    <button class="alt" style="margin-top:0" onclick="saveWord()">Save as Word</button>
+    <button class="alt" style="margin-top:0" onclick="makeWorksheet()">Regenerate</button>
+    <p class="hint">Regenerate makes a different worksheet from the same text (your manual edits are replaced). The worksheet below is editable: click on any text to correct or improve it before printing or saving. In the print window, choose “Save as PDF”.</p>
   </div>
-
-  <div class="section">
-    <h2>A. Comprehension Questions</h2>
-    <p><em>Questions include literal understanding, inference, vocabulary in context, and personal response.</em></p>
-    <ol id="questions"></ol>
-  </div>
-
-  <div class="section">
-    <h2>B. True or False</h2>
-    <p>Read each statement. Write <strong>True</strong>, <strong>False</strong>, or <strong>Not Mentioned</strong>.</p>
-    <ol id="tf"></ol>
-  </div>
-
-  <div class="section">
-    <h2>C. Vocabulary Matching</h2>
-    <p>Match each word with its meaning.</p>
-    <ol id="vocab"></ol>
-  </div>
-
-  <div class="section">
-    <h2>D. Gap-Fill</h2>
-    <p>Complete the sentences with words from the box.</p>
-    <p><strong>Word bank:</strong> <span id="wordBank"></span></p>
-    <ol id="gaps"></ol>
-  </div>
-
-  <div class="section">
-    <h2>E. Guided Writing</h2>
-    <p id="guidedTask"></p>
-
-    <p><strong>Useful words and phrases:</strong></p>
-    <p id="guidedLanguage"></p>
-
-    <p><strong>Sentence starters:</strong></p>
-    <ul id="guidedStarters"></ul>
-
-    <p><strong>Notes:</strong> Use information from the text. Write complete sentences. Check spelling, punctuation, and grammar.</p>
-
-    <div class="writing-box"></div>
-  </div>
-
-  <div class="section">
-    <h2>F. Free Writing</h2>
-    <p id="freeTask"></p>
-
-    <p><strong>You may use these ideas:</strong></p>
-    <ul id="freeIdeas"></ul>
-
-    <div class="writing-box"></div>
-  </div>
-
-  <div class="section">
-    <h2>Answer Key</h2>
-    <div id="answers"></div>
-  </div>
-
-  <div class="footer">
-    Made with <strong>Instant EFL Worksheet Maker</strong> — free tool for busy English teachers.
-  </div>
+  <div id="sheet" contenteditable="true"></div>
 </div>
 
 <script>
-function getWords(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z\s]/g, " ")
-    .split(/\s+/)
-    .filter(word => word.length > 4);
+const UNITS={
+  lit:{1:"Unit 1 — Getting Through",2:"Units 2–3 — Once Upon a Time / Our Findings Show",3:"Units 4–5 — Back to Nature / Eureka"},
+  sci:{1:"Unit 1 — Getting Through",2:"Unit 2 — Our Findings Show",3:"Units 3–4 — Back to Nature / Eureka"}
+};
+const GRAMMAR={
+ 1:[["Students (to use) the internet for their research every day.","use"],["Email is (fast) than a letter.","faster"],["Complete with must / mustn’t / don’t have to: You ____ use your phone in class. It is forbidden.","mustn’t"],["Join with “in order to”: I study hard. I want to pass the exam.","I study hard in order to pass the exam."],["Complete with both / neither / either: I like ____ tea ____ coffee, so I drink nothing.","neither … nor"],["Complete with a / an / the: She bought ____ umbrella.","an"]],
+ 2:[["While I (to walk) home, it (to start) to rain.","was walking / started"],["Complete with who / which: The writer ____ wrote this book is famous.","who"],["Complete with who / which: The book ____ I read last week was interesting.","which"],["Report: “I like this film,” said Sara. → Sara said that …","she liked that film."],["Report: “Where do you live?” he asked me. → He asked me …","where I lived."],["Yesterday we (to visit) the museum.","visited"]],
+ 3:[["If you heat ice, it (to melt).","melts"],["If the glaciers (to melt), the sea level will rise.","melt"],["If I (to be) the president, I would plant more trees.","were / was"],["Complete with As a result / However: Pollution increases. ____, many animals die.","As a result"],["Rewrite with so … that: The invention was useful. Everybody bought it.","The invention was so useful that everybody bought it."],["Complete with Although / However: ____ the phone is expensive, many people buy it.","Although"]]
+};
+const TOPICS={
+ 1:["Write a reply to an email in which a pen friend asks about your daily activities and hobbies.","Write about the advantages (+) and the disadvantages (–) of the internet."],
+ 2:["Write a short biography of a famous person you admire.","Write a short review of a book or a film you liked."],
+ 3:["Write a paragraph about the causes and effects of one type of pollution.","Write a short paragraph giving your opinion on renewable energies."]
+};
+const LEVEL={easy:{name:"Easy",wc:"60–80",refs:2,gaps:4,bank:true,scr:1,gr:3,notes:4,wh:2,pick:false,just:false},
+             medium:{name:"Medium",wc:"80–100",refs:3,gaps:5,bank:true,scr:1,gr:4,notes:4,wh:2,pick:true,just:true},
+             hard:{name:"Advanced",wc:"100–120",refs:3,gaps:5,bank:false,scr:2,gr:5,notes:3,wh:3,pick:true,just:true}};
+const STOP=new Set("about after again also because before being between could does during each every from have having into more most other should since some such than that their them then there these they this those through very were what when where which while will with would your".split(" "));
+
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const spread=(a,n)=>{if(a.length<=n)return a;const s=a.length/n;return Array.from({length:n},(_,k)=>a[Math.floor(k*s)])};
+const letters="abcdefghij";
+
+function hint(){$("unitHint").textContent="Language focus for this term: "+UNITS[$("stream").value][$("term").value]+"."}
+["stream","term"].forEach(i=>$(i).addEventListener("change",hint));hint();
+$("withKey").addEventListener("change",()=>{const k=$("key");if(k)k.style.display=$("withKey").checked?"block":"none"});
+
+function splitS(t){return t.replace(/([.!?])\s+(?=[A-Z“"‘'])/g,"$1\u0001").split("\u0001")}
+function wordsOf(t){return (t.toLowerCase().match(/[a-z’']+/g)||[])}
+function keywords(t){const f={};wordsOf(t).forEach(w=>{if(w.length>4&&!STOP.has(w))f[w]=(f[w]||0)+1});
+  return Object.keys(f).sort((a,b)=>f[b]-f[a]||b.length-a.length)}
+const NUMW={one:"two",two:"three",three:"five",four:"six",five:"ten",ten:"twenty",million:"thousand",thousand:"hundred"};
+const PAIRS=[["increase","decrease"],["increases","decreases"],["rise","fall"],["rises","falls"],["more","less"],["many","few"],["always","never"],["often","rarely"],["before","after"],["big","small"],["large","small"],["good","bad"],["important","unimportant"],["easy","difficult"],["safe","dangerous"],["rich","poor"],["hot","cold"],["higher","lower"],["high","low"],["new","old"],["clean","dirty"],["help","harm"],["helps","harms"],["positive","negative"],["fast","slow"],["faster","slower"],["cooler","warmer"],["closer","farther"]];
+const ANT=[];PAIRS.forEach(p=>{ANT.push(p,[p[1],p[0]])});
+const SYN=[["shocked","surprised"],["problem","issue"],["problems","issues"],["big","large"],["started","began"],["start","begin"],["quickly","rapidly"],["shows","demonstrates"],["important","essential"]];
+function swap(s,list){for(const [a,b] of list){const r=new RegExp("\\b"+a+"\\b","i");if(r.test(s))return s.replace(r,m=>m[0]===m[0].toUpperCase()?b[0].toUpperCase()+b.slice(1):b)}return null}
+function falsify(s){
+  if(/\d/.test(s)){const r=s.replace(/\b\d+(?:[.,]\d+)?\b/,m=>{const v=parseFloat(m.replace(",","."));return String(v>=1?Math.round(v*2+1):v+1)});if(r!==s)return r}
+  const nm=new RegExp("\\b("+Object.keys(NUMW).join("|")+")\\b","i");if(nm.test(s))return s.replace(nm,m=>NUMW[m.toLowerCase()]);
+  const a=swap(s,ANT);if(a)return a;
+  if(/\b(not|never|n’t|n't|no)\b/i.test(s))return null;
+  const r=/\b(is|are|was|were|can|will|has|have|must|should|could|would)\b/;return r.test(s)?s.replace(r,"$1 not"):null}
+function para(s){return swap(s,SYN)||s}
+const AUX="is|are|was|were|can|will|has|have|must|should|could|would";
+const DET=/^(The|A|An|This|These|Those|It|They|We|He|She|There|Some|Many|Most|People)$/;
+let CUR="";
+const lc=w=>{const f=w.split(" ")[0];const proper=f==="I"||new RegExp("[^.!?\"“]\\s"+f+"\\b").test(CUR)||!new RegExp("\\b"+f.toLowerCase()+"\\b").test(CUR);return(DET.test(f)||!proper)?w[0].toLowerCase()+w.slice(1):w};
+function split(s){if(/["“”]/.test(s))return null;const m=s.match(new RegExp("^([^,;:]+?)\\s+("+AUX+")\\s+(.+?)[.!?]?$"));
+  return m&&m[1].split(" ").length<=7&&!/\b(said|says|thinks|think|explained|added|reported|that|who|which|because|when|if)\b/i.test(m[1])&&!/^not\b/i.test(m[3])?{sub:m[1],aux:m[2],rest:m[3]}:null}
+function toYN(s){const p=split(s);return p?p.aux[0].toUpperCase()+p.aux.slice(1)+" "+lc(p.sub)+" "+p.rest+"?":null}
+function whQ(s){const p=split(s);if(!p||p.sub.split(" ").length>5||/^(it|they|he|she|we|i|you|there|this|these|that)\b/i.test(p.sub))return null;
+  const a=p.aux.toLowerCase(),sub=lc(p.sub);
+  if(/^(will|can|must|should|could|would)$/.test(a))return"What "+a+" "+sub+" do?";
+  if(/^(has|have)$/.test(a))return"What "+a+" "+sub+" done?";
+  if(/^(is|are|was|were)$/.test(a))return/^\w+ing\b/.test(p.rest)?"What "+a+" "+sub+" doing?":"What "+a+" "+sub+(/^(a|an|the)\b/i.test(p.rest)?"?":" like?");
+  return null}
+function sClass(w){if(/(ss|x|z|ch|sh)es$|(ce|ge|se|ze)s$/.test(w))return"/iz/";if(/(p|t|k|f|th)s$/.test(w))return"/s/";return"/z/"}
+function edClass(w){if(/[td]ed$/.test(w))return"/id/";if(/(ss|k|p|f|x|ch|sh|c|gh)ed$/.test(w))return"/t/";return"/d/"}
+
+function makeWorksheet(){
+  const raw=$("text").value.trim();
+  if(raw.length<150){alert("Please paste a longer English text (at least 3–4 sentences).");return}
+  const term=$("term").value,lv=LEVEL[$("level").value],stream=$("stream").value;
+  const paras=raw.split(/\n\s*\n/).map(p=>p.replace(/\s+/g," ").trim()).filter(Boolean);
+  const flat=paras.join(" ");CUR=flat;
+  const sents=splitS(flat).filter(s=>s.length>20);
+  const nw=s=>s.split(" ").length;
+  const kws=keywords(flat);
+  let key=[];
+
+  /* ---- references ---- */
+  const PR=/\b(it|its|they|their|them|he|she|his|her|which|who|there)\b/gi,occ=[];
+  paras.forEach((p,i)=>{PR.lastIndex=0;let m;while((m=PR.exec(p)))occ.push({p:i,i:m.index,w:m[0]})});
+  const chosen=spread(occ,lv.refs);
+  const textHtml=paras.map((p,pi)=>{const mine=chosen.filter(c=>c.p===pi).sort((a,b)=>a.i-b.i);let out="",pos=0;
+    mine.forEach(c=>{out+=esc(p.slice(pos,c.i))+"<u><b>"+esc(c.w)+"</b></u>";pos=c.i+c.w.length});
+    return"<p>"+out+esc(p.slice(pos))+"</p>"}).join("");
+
+  /* ---- A. comprehension ---- */
+const corr=stream==="lit"&&lv.name!=="Easy";
+const trueSents=sents.filter(s=>nw(s)>=8&&nw(s)<=26);
+const pick=spread(trueSents,4),fs=new Set();
+[1,3,0,2].forEach(i=>{if(pick[i]&&fs.size<2&&falsify(pick[i]))fs.add(i)});
+const tf=pick.map((s,i)=>fs.has(i)?{t:falsify(s),a:"False",src:s}:{t:para(s),a:"True",src:s});
+const usedS=new Set(pick);
+const qs=[];
+// yes/no
+const ynS=sents.find(s=>!usedS.has(s)&&nw(s)<=22&&toYN(s))||sents.find(s=>nw(s)<=22&&toYN(s));
+if(ynS){const f=falsify(ynS),useF=f&&toYN(f);qs.push({q:toYN(useF?f:ynS)+(lv.just?" Justify your answer.":""),a:(useF?"No — ":"Yes — ")+ynS});usedS.add(ynS)}
+// wh
+const whS=spread(sents.filter(s=>whQ(s)),lv.wh);
+whS.forEach(s=>qs.push({q:whQ(s),a:s}));
+const fb=[{q:"What is the main idea of the text?",a:sents[0]},{q:`Why is “${kws[0]||"this topic"}” important according to the text?`,a:(sents.find(s=>new RegExp("\\b"+kws[0]+"\\b","i").test(s))||"")}];
+while(qs.filter(o=>/^(What|Why|How|Who)/.test(o.q)).length<lv.wh&&fb.length)qs.push(fb.shift());
+// pick out
+if(lv.pick){const ps=trueSents.find(s=>!usedS.has(s)&&para(s)!==s);
+  qs.push(ps?{q:"Pick out from the text the sentence which shows that: “"+para(ps)+"”",a:ps}:{q:"Pick out from the text two words related to the theme of the text.",a:kws.slice(0,3).join(", ")})}
+const refs=chosen.map(c=>({w:c.w,p:c.p+1,ctx:"…"+paras[c.p].slice(Math.max(0,c.i-70),c.i+c.w.length+25)+"…"}));
+
+let A=`<div class="section text">${textHtml}</div>
+<h2>1. Say whether the following statements are true or false${corr?", then correct the false ones":""}. <span class="pts">(2 pts)</span></h2>
+<ol type="a">${tf.map(o=>`<li>${esc(o.t)} ........${corr?'<div class="line"></div>':""}</li>`).join("")}</ol>
+<h2>2. Answer the following questions according to the text. <span class="pts">(3 pts)</span></h2>
+<ol type="a">${qs.map(o=>`<li>${esc(o.q)}<div class="line"></div><div class="line"></div></li>`).join("")}</ol>
+<h2>3. What or who do the underlined words in the text refer to? <span class="pts">(2 pts)</span></h2>
+<ol type="a">${refs.map(r=>`<li><b>${esc(r.w)}</b> (§${r.p}) → ..................................</li>`).join("")}</ol>`;
+key.push(`<p><b>I-A.1</b> ${tf.map((o,i)=>letters[i]+") "+o.a).join(" &nbsp; ")}${corr?"<br>Corrections: "+tf.filter(o=>o.a==="False").map(o=>esc(o.src)).join(" / "):""}</p>`);
+key.push(`<p><b>I-A.2</b> Suggested answers (from the text):<br>${qs.map((o,i)=>letters[i]+") "+esc(o.a)).join("<br>")}</p>`);
+key.push(`<p><b>I-A.3</b> Context of each pronoun — the student must name the noun/idea it replaces:<br>${refs.map((r,i)=>letters[i]+") "+esc(r.ctx)).join("<br>")}</p>`);
+
+/* ---- B. text exploration ---- */
+  let B="",n=1;
+  // pronunciation
+  let pw=[...new Set(wordsOf(flat).filter(w=>w.length>4&&w.endsWith("ed")))].slice(0,4),kind="ed",fn=edClass,cols=["/t/","/d/","/id/"];
+  if(pw.length<3){pw=[...new Set(wordsOf(flat).filter(w=>w.length>3&&w.endsWith("s")&&!/(ss|us|is)$/.test(w)))].slice(0,4);kind="s";fn=sClass;cols=["/s/","/z/","/iz/"]}
+  if(pw.length>=3){
+    B+=`<h2>${n++}. Classify the following words according to the pronunciation of the final “${kind}”. <span class="pts">(2 pts)</span></h2>
+    <p><b>${pw.join(" – ")}</b></p><table><tr>${cols.map(c=>`<th>${c}</th>`).join("")}</tr><tr>${cols.map(()=>`<td class="tall"></td>`).join("")}</tr></table>`;
+    key.push(`<p><b>I-B.${n-1}</b> ${cols.map(c=>c+": "+(pw.filter(w=>fn(w)===c).join(", ")||"—")).join(" &nbsp;|&nbsp; ")}<br><span class="note">Automatic suggestion — please check the pronunciation.</span></p>`)}
+  // paragraph activity: gap-filling OR ordering sentences
+const bestP=paras.map(p=>splitS(p)).sort((a,b)=>b.length-a.length)[0];
+const win=(bestP.length>=4?bestP:sents).slice(0,lv.name==="Easy"?4:5);
+if(win.length>=3){
+  if($("act").value==="gap"){
+    const pt=win.join(" "),ws=[...new Set((pt.match(/\b[a-z]{5,}\b/g)||[]).filter(x=>!STOP.has(x)))];
+    const gw=spread(ws,lv.gaps).map(w=>({w,i:pt.search(new RegExp("\\b"+w+"\\b","i"))})).filter(o=>o.i>=0).sort((a,b)=>a.i-b.i);
+    let out="",pos=0;gw.forEach((o,k)=>{out+=esc(pt.slice(pos,o.i))+"…("+(k+1)+")…";pos=o.i+o.w.length});out+=esc(pt.slice(pos));
+    B+=`<h2>${n++}. Complete the following passage ${lv.bank?"with words from the list":"with appropriate words"}. <span class="pts">(2 pts)</span></h2>
+    ${lv.bank?`<p><b>${shuffle(gw.map(g=>g.w)).join(" – ")}</b></p>`:""}<p>${out}</p>`;
+    key.push(`<p><b>I-B.${n-1}</b> ${gw.map((g,k)=>(k+1)+". "+g.w).join(" &nbsp; ")}</p>`);
+  }else{
+    let idx=shuffle(win.map((_,i)=>i));if(idx.every((v,i)=>v===i))idx.reverse();
+    B+=`<h2>${n++}. Put the following sentences in the right order to get a coherent paragraph. <span class="pts">(2 pts)</span></h2>
+    ${idx.map((v,k)=>`<p>${letters[k]}) ${esc(win[v])}</p>`).join("")}<p>Correct order: ........ – ........ – ........ – ........${win.length>4?" – ........":""}</p>`;
+    key.push(`<p><b>I-B.${n-1}</b> ${win.map((_,i)=>letters[idx.indexOf(i)]).join(" – ")}</p>`);
+  }}
+// reorder
+  const sc=spread(sents.filter(s=>nw(s)>=6&&nw(s)<=12),lv.scr);
+  if(sc.length){
+    B+=`<h2>${n++}. Reorder the words to make a meaningful sentence. <span class="pts">(1 pt)</span></h2><ol>${sc.map(s=>{
+      const w=s.replace(/[.!?]$/,"").split(" ");let m=shuffle(w);if(m.join(" ")===w.join(" "))m=w.slice().reverse();
+      return`<li>${esc(m.join(" – "))}</li>`}).join("")}</ol>`;
+    key.push(`<p><b>I-B.${n-1}</b> ${sc.map(esc).join("<br>")}</p>`)}
+  // grammar of the term
+  const gr=GRAMMAR[term].slice(0,lv.gr);
+  B+=`<h2>${n++}. Language practice <span class="pts">(3 pts)</span></h2><ol>${gr.map(g=>`<li>${esc(g[0])} ........</li>`).join("")}</ol>`;
+  key.push(`<p><b>I-B.${n-1}</b> ${gr.map((g,i)=>(i+1)+". "+esc(g[1])).join(" &nbsp; ")}</p>`);
+
+  /* ---- Part II ---- */
+  const cl=[];
+spread(sents,sents.length).forEach(x=>x.replace(/[.!?]$/,"").split(/,|;| and | because | but /).forEach(c=>{c=c.trim().replace(/^(First|Next|Finally|Also|Then|However|But|And)\b,?\s*/i,"");if(nw(c)>=3&&nw(c)<=8&&!/^["“]/.test(c))cl.push(c[0].toUpperCase()+c.slice(1))}));
+const notes=spread(cl,lv.notes);
+const t2=TOPICS[term][Math.floor(Math.random()*2)];
+const W=`<p><b>Choose ONE topic.</b></p>
+ <p><b>Topic 1:</b> Using the following notes, write a paragraph of about ${lv.wc} words on the subject of the text.</p>
+ <ul>${notes.map(c=>`<li>${esc(c)}</li>`).join("")}</ul>
+ <p><b>Topic 2:</b> ${t2} (about ${lv.wc} words)</p>
+ ${[1,2,3,4,5,6].map(()=>'<div class="line"></div>').join("")}
+ <table style="margin-top:12px"><tr><th>Relevance</th><th>Semantic coherence</th><th>Correct use of English</th><th>Excellence (vocabulary + creativity)</th></tr><tr><td>1</td><td>1</td><td>2</td><td>1</td></tr></table>`;
+
+const sch=$("school").value.trim()||"Lycée ...................................";
+  const keyHtml=`<div class="key" id="key" style="display:${$("withKey").checked?"block":"none"}" contenteditable="true"><h2>Teacher’s answer key — Term ${term}, ${lv.name}</h2>${key.join("")}
+    <p><b>II. Written expression (5 pts)</b> Relevance 1 – Semantic coherence 1 – Correct use of English 2 – Excellence 1.</p>
+    <p class="note">Items marked “automatic” are suggestions generated from the text: always check them before you use them.</p></div>`;
+
+  $("sheet").innerHTML=`
+   <div class="head"><div>${esc(sch)}</div><div>Class: 1st year ${stream==="lit"?"Literary":"Scientific"}</div></div>
+   <h1 class="title">Term ${term} Worksheet — ${lv.name}</h1>
+   <p class="focus">${UNITS[stream][term]}</p>
+   <p><b>Name:</b> ____________________________ &nbsp; <b>Date:</b> ______________</p>
+   <div class="part">Part One: Reading and Interpreting (15 pts)</div>
+   <div class="part" style="background:#2e86c1">A. Comprehension (7 pts)</div>${A}
+   <div class="part" style="background:#2e86c1">B. Text Exploration (8 pts)</div>${B}
+   <div class="part">Part Two: Written Expression (5 pts)</div>${W}
+   <div class="footer">Made with Instant EFL Worksheet Maker — free tool for busy English teachers.</div>${keyHtml}`;
+  $("worksheet").style.display="block";
+  window.scrollTo({top:$("worksheet").offsetTop,behavior:"smooth"});
 }
 
-function removeDuplicates(words) {
-  return [...new Set(words)];
-}
-
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
-
-function makeWorksheet() {
-  const text = document.getElementById("text").value.trim();
-  const level = document.getElementById("level").value;
-
-  if (text.length < 50) {
-    alert("Please paste a longer English text.");
-    return;
-  }
-
-  const sentences = text
-    .split(/(?<=[.!?])\s+/)
-    .filter(sentence => sentence.length > 10);
-
-  const words = removeDuplicates(getWords(text)).slice(0, 15);
-  const mainWord = words[0] || "the topic";
-
-  document.getElementById("outLevel").innerText =
-    level === "easy" ? "Easy — A1/A2" :
-    level === "medium" ? "Medium — A2/B1" :
-    "Hard — B1/B2";
-
-  document.getElementById("outText").innerText = text;
-
-  const questionTemplates = {
-    easy: [
-      "What is the text mainly about?",
-      "Find one important fact in the text.",
-      "Who or what is the text about?",
-      "What does the word “____” mean in the text? Choose from: ______ / ______ / ______.",
-      "Look at the text. What do you think will happen next? Why?",
-      "Do you like this topic? Write one reason."
-    ],
-    medium: [
-      "What is the main idea of the text?",
-      "Which sentence gives the most important information? Explain why.",
-      "What can you infer about the writer’s opinion?",
-      "Find a word in the text that means the same as “____”.",
-      "Why do you think the writer included this information?",
-      "What might happen if the situation in the text changed?",
-      "Do you agree with the main idea? Give one reason."
-    ],
-    hard: [
-      "What is the writer’s main purpose: to inform, persuade, describe, or entertain? Explain.",
-      "Identify one fact and one opinion in the text.",
-      "What conclusion can you draw from the information given?",
-      "Explain the meaning of “____” as it is used in the text.",
-      "What assumption does the writer make?",
-      "How reliable is the information in the text? Give one reason.",
-      "To what extent do you agree with the writer’s point of view? Justify your answer."
-    ]
-  };
-
-  const selectedQuestions = shuffle([...questionTemplates[level]]).slice(0, 5);
-
-  document.getElementById("questions").innerHTML =
-    selectedQuestions.map(question => `<li>${question}</li>`).join("");
-
-  const tfTypes = ["True", "False", "Not Mentioned"];
-  const selectedSentences = shuffle([...sentences]).slice(0, 5);
-
-  document.getElementById("tf").innerHTML = selectedSentences
-    .map((sentence, index) => {
-      const type = tfTypes[index % 3];
-      return `<li>${sentence} <strong>(${type})</strong></li>`;
-    })
-    .join("");
-
-  const vocabWords = words.slice(0, 5);
-
-  document.getElementById("vocab").innerHTML = vocabWords
-    .map(word => `<li><strong>${word}</strong> — ______________________</li>`)
-    .join("");
-
-  const gapWords = words.slice(5, 10);
-  const gapSentences = selectedSentences.slice(0, 5);
-
-  document.getElementById("wordBank").innerText = gapWords.join(", ");
-
-  document.getElementById("gaps").innerHTML = gapSentences
-    .map((sentence, index) => {
-      const word = gapWords[index];
-      if (!word) return "";
-      const pattern = new RegExp(word, "i");
-      const newSentence = pattern.test(sentence)
-        ? sentence.replace(pattern, '<span class="gap"></span>')
-        : sentence + ' <span class="gap"></span>';
-      return `<li>${newSentence}</li>`;
-    })
-    .join("");
-
-  const writingTasks = {
-    easy: {
-      guided: {
-        task: `Write 4–5 sentences about “${mainWord}”, using ideas from the text.`,
-        language: "topic, important, because, for example, I think, first, finally",
-        starters: [
-          "The text is about…",
-          "One important idea is…",
-          "For example,…",
-          "I think this topic is…"
-        ]
-      },
-      free: {
-        task: "Write 4–5 sentences about a similar topic from your own life.",
-        ideas: [
-          "Something you like",
-          "A person or place connected to the topic",
-          "Why it is important to you",
-          "One thing you would like to change"
-        ]
-      }
-    },
-    medium: {
-      guided: {
-        task: `Write a paragraph of 60–80 words summarizing the text about “${mainWord}” and giving your opinion.`,
-        language: "main idea, according to the text, however, because, in my opinion, for instance, overall",
-        starters: [
-          "The text explains…",
-          "According to the text,…",
-          "One important point is…",
-          "In my opinion,…",
-          "Overall,…"
-        ]
-      },
-      free: {
-        task: "Write a paragraph of 60–80 words giving your opinion about the topic.",
-        ideas: [
-          "Your personal experience",
-          "An advantage or disadvantage",
-          "A real-life example",
-          "Your recommendation"
-        ]
-      }
-    },
-    hard: {
-      guided: {
-        task: `Write a paragraph of 100–130 words analyzing the writer’s ideas about “${mainWord}” and giving a supported opinion.`,
-        language: "The writer argues that, This suggests that, However, In contrast, As a result, To a large extent, In conclusion",
-        starters: [
-          "The main purpose of the text is to…",
-          "The writer suggests that…",
-          "One strong argument is…",
-          "However, it could also be argued that…",
-          "In conclusion,…"
-        ]
-      },
-      free: {
-        task: "Write an opinion paragraph of 100–130 words about an issue related to the text.",
-        ideas: [
-          "A problem connected to the topic",
-          "Two possible solutions",
-          "Advantages and disadvantages",
-          "Your final recommendation"
-        ]
-      }
-    }
-  };
-
-  const writing = writingTasks[level];
-
-  document.getElementById("guidedTask").innerText = writing.guided.task;
-  document.getElementById("guidedLanguage").innerText = writing.guided.language;
-
-  document.getElementById("guidedStarters").innerHTML =
-    writing.guided.starters.map(starter => `<li>${starter}</li>`).join("");
-
-  document.getElementById("freeTask").innerText = writing.free.task;
-
-  document.getElementById("freeIdeas").innerHTML =
-    writing.free.ideas.map(idea => `<li>${idea}</li>`).join("");
-
-  document.getElementById("answers").innerHTML = `
-    <p><strong>A.</strong> Answers will vary. Accept reasonable responses based on the text.</p>
-    <p><strong>B.</strong> Teachers should check each statement against the reading text.</p>
-    <p><strong>C.</strong> Meanings should be discussed in class or completed using a dictionary.</p>
-    <p><strong>D.</strong> Target words: ${gapWords.join(", ")}</p>
-    <p><strong>E.</strong> Students’ guided writing will vary. Check that they use ideas from the text and the suggested language.</p>
-    <p><strong>F.</strong> Students’ free writing will vary. Assess content, organization, language, and effort.</p>
-  `;
-
-  document.getElementById("worksheet").style.display = "block";
-
-  window.scrollTo({
-    top: document.getElementById("worksheet").offsetTop,
-    behavior: "smooth"
-  });
+function saveWord(){
+  const css="body{font-family:Arial;font-size:11pt}table{border-collapse:collapse;width:100%}th,td{border:1px solid #444;padding:4px}.line{border-bottom:1px dotted #777;height:22px}.gap{border-bottom:1px solid #000}.part{background:#1a5276;color:#fff;padding:3px}h2{font-size:12pt;color:#1a5276}.key{page-break-before:always}";
+  const html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>'+css+'</style></head><body>'+$("sheet").innerHTML+'</body></html>';
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob(["\ufeff",html],{type:"application/msword"}));
+  a.download="EFL-worksheet-Y1-T"+$("term").value+"-"+$("level").value+".doc";
+  document.body.appendChild(a);a.click();a.remove();
 }
 </script>
-
 </body>
 </html>
