@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instant EFL Worksheet Maker</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 20px;
+    color: #222;
+  }
+
+  .container {
+    max-width: 850px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  h1 {
+    color: #1a5276;
+    margin-bottom: 5px;
+  }
+
+  .subtitle {
+    color: #555;
+    margin-top: 0;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+
+  select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+  }
+
+  textarea {
+    min-height: 160px;
+  }
+
+  button {
+    margin-top: 20px;
+    background: #1a5276;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #154360;
+  }
+
+  #worksheet {
+    display: none;
+    margin-top: 30px;
+    border-top: 3px solid #1a5276;
+    padding-top: 20px;
+  }
+
+  .section {
+    margin-bottom: 25px;
+  }
+
+  .section h2 {
+    color: #1a5276;
+    font-size: 18px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+  }
+
+  ol, ul {
+    padding-left: 22px;
+  }
+
+  .gap {
+    display: inline-block;
+    min-width: 100px;
+    border-bottom: 1px solid #333;
+  }
+
+  .writing-box {
+    border: 1px dashed #888;
+    min-height: 160px;
+    margin-top: 10px;
+  }
+
+  .footer {
+    margin-top: 30px;
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+  }
+
+  @media print {
+    body {
+      background: white;
+      padding: 0;
+    }
+
+    .container {
+      box-shadow: none;
+      padding: 0;
+    }
+
+    .no-print {
+      display: none;
+    }
+
+    #worksheet {
+      display: block !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container no-print">
+  <h1>Instant EFL Worksheet Maker</h1>
+  <p class="subtitle">Paste any English text. Choose a level. Get a printable EFL worksheet.</p>
+
+  <label for="level">Choose level</label>
+  <select id="level">
+    <option value="easy">Easy — A1/A2</option>
+    <option value="medium">Medium — A2/B1</option>
+    <option value="hard">Hard — B1/B2</option>
+  </select>
+
+  <label for="text">Paste your English text</label>
+  <textarea id="text" placeholder="Paste a short reading text, story, dialogue, or lesson passage here..."></textarea>
+
+  <button onclick="makeWorksheet()">Create Worksheet</button>
+  <button onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<div id="worksheet" class="container">
+  <h1>EFL Worksheet</h1>
+  <p><strong>Level:</strong> <span id="outLevel"></span></p>
+  <p><strong>Name:</strong> ____________________________ &nbsp;&nbsp; <strong>Date:</strong> ______________</p>
+
+  <div class="section">
+    <h2>Reading Text</h2>
+    <p id="outText"></p>
+  </div>
+
+  <div class="section">
+    <h2>A. Comprehension Questions</h2>
+    <p><em>Questions include literal understanding, inference, vocabulary in context, and personal response.</em></p>
+    <ol id="questions"></ol>
+  </div>
+
+  <div class="section">
+    <h2>B. True or False</h2>
+    <p>Read each statement. Write <strong>True</strong>, <strong>False</strong>, or <strong>Not Mentioned</strong>.</p>
+    <ol id="tf"></ol>
+  </div>
+
+  <div class="section">
+    <h2>C. Vocabulary Matching</h2>
+    <p>Match each word with its meaning.</p>
+    <ol id="vocab"></ol>
+  </div>
+
+  <div class="section">
+    <h2>D. Gap-Fill</h2>
+    <p>Complete the sentences with words from the box.</p>
+    <p><strong>Word bank:</strong> <span id="wordBank"></span></p>
+    <ol id="gaps"></ol>
+  </div>
+
+  <div class="section">
+    <h2>E. Guided Writing</h2>
+    <p id="guidedTask"></p>
+
+    <p><strong>Useful words and phrases:</strong></p>
+    <p id="guidedLanguage"></p>
+
+    <p><strong>Sentence starters:</strong></p>
+    <ul id="guidedStarters"></ul>
+
+    <p><strong>Notes:</strong> Use information from the text. Write complete sentences. Check spelling, punctuation, and grammar.</p>
+
+    <div class="writing-box"></div>
+  </div>
+
+  <div class="section">
+    <h2>F. Free Writing</h2>
+    <p id="freeTask"></p>
+
+    <p><strong>You may use these ideas:</strong></p>
+    <ul id="freeIdeas"></ul>
+
+    <div class="writing-box"></div>
+  </div>
+
+  <div class="section">
+    <h2>Answer Key</h2>
+    <div id="answers"></div>
+  </div>
+
+  <div class="footer">
+    Made with <strong>Instant EFL Worksheet Maker</strong> — free tool for busy English teachers.
+  </div>
+</div>
+
+<script>
+function getWords(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z\s]/g, " ")
+    .split(/\s+/)
+    .filter(word => word.length > 4);
+}
+
+function removeDuplicates(words) {
+  return [...new Set(words)];
+}
+
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+function makeWorksheet() {
+  const text = document.getElementById("text").value.trim();
+  const level = document.getElementById("level").value;
+
+  if (text.length < 50) {
+    alert("Please paste a longer English text.");
+    return;
+  }
+
+  const sentences = text
+    .split(/(?<=[.!?])\s+/)
+    .filter(sentence => sentence.length > 10);
+
+  const words = removeDuplicates(getWords(text)).slice(0, 15);
+  const mainWord = words[0] || "the topic";
+
+  document.getElementById("outLevel").innerText =
+    level === "easy" ? "Easy — A1/A2" :
+    level === "medium" ? "Medium — A2/B1" :
+    "Hard — B1/B2";
+
+  document.getElementById("outText").innerText = text;
+
+  const questionTemplates = {
+    easy: [
+      "What is the text mainly about?",
+      "Find one important fact in the text.",
+      "Who or what is the text about?",
+      "What does the word “____” mean in the text? Choose from: ______ / ______ / ______.",
+      "Look at the text. What do you think will happen next? Why?",
+      "Do you like this topic? Write one reason."
+    ],
+    medium: [
+      "What is the main idea of the text?",
+      "Which sentence gives the most important information? Explain why.",
+      "What can you infer about the writer’s opinion?",
+      "Find a word in the text that means the same as “____”.",
+      "Why do you think the writer included this information?",
+      "What might happen if the situation in the text changed?",
+      "Do you agree with the main idea? Give one reason."
+    ],
+    hard: [
+      "What is the writer’s main purpose: to inform, persuade, describe, or entertain? Explain.",
+      "Identify one fact and one opinion in the text.",
+      "What conclusion can you draw from the information given?",
+      "Explain the meaning of “____” as it is used in the text.",
+      "What assumption does the writer make?",
+      "How reliable is the information in the text? Give one reason.",
+      "To what extent do you agree with the writer’s point of view? Justify your answer."
+    ]
+  };
+
+  const selectedQuestions = shuffle([...questionTemplates[level]]).slice(0, 5);
+
+  document.getElementById("questions").innerHTML =
+    selectedQuestions.map(question => `<li>${question}</li>`).join("");
+
+  const tfTypes = ["True", "False", "Not Mentioned"];
+  const selectedSentences = shuffle([...sentences]).slice(0, 5);
+
+  document.getElementById("tf").innerHTML = selectedSentences
+    .map((sentence, index) => {
+      const type = tfTypes[index % 3];
+      return `<li>${sentence} <strong>(${type})</strong></li>`;
+    })
+    .join("");
+
+  const vocabWords = words.slice(0, 5);
+
+  document.getElementById("vocab").innerHTML = vocabWords
+    .map(word => `<li><strong>${word}</strong> — ______________________</li>`)
+    .join("");
+
+  const gapWords = words.slice(5, 10);
+  const gapSentences = selectedSentences.slice(0, 5);
+
+  document.getElementById("wordBank").innerText = gapWords.join(", ");
+
+  document.getElementById("gaps").innerHTML = gapSentences
+    .map((sentence, index) => {
+      const word = gapWords[index];
+      if (!word) return "";
+      const pattern = new RegExp(word, "i");
+      const newSentence = pattern.test(sentence)
+        ? sentence.replace(pattern, '<span class="gap"></span>')
+        : sentence + ' <span class="gap"></span>';
+      return `<li>${newSentence}</li>`;
+    })
+    .join("");
+
+  const writingTasks = {
+    easy: {
+      guided: {
+        task: `Write 4–5 sentences about “${mainWord}”, using ideas from the text.`,
+        language: "topic, important, because, for example, I think, first, finally",
+        starters: [
+          "The text is about…",
+          "One important idea is…",
+          "For example,…",
+          "I think this topic is…"
+        ]
+      },
+      free: {
+        task: "Write 4–5 sentences about a similar topic from your own life.",
+        ideas: [
+          "Something you like",
+          "A person or place connected to the topic",
+          "Why it is important to you",
+          "One thing you would like to change"
+        ]
+      }
+    },
+    medium: {
+      guided: {
+        task: `Write a paragraph of 60–80 words summarizing the text about “${mainWord}” and giving your opinion.`,
+        language: "main idea, according to the text, however, because, in my opinion, for instance, overall",
+        starters: [
+          "The text explains…",
+          "According to the text,…",
+          "One important point is…",
+          "In my opinion,…",
+          "Overall,…"
+        ]
+      },
+      free: {
+        task: "Write a paragraph of 60–80 words giving your opinion about the topic.",
+        ideas: [
+          "Your personal experience",
+          "An advantage or disadvantage",
+          "A real-life example",
+          "Your recommendation"
+        ]
+      }
+    },
+    hard: {
+      guided: {
+        task: `Write a paragraph of 100–130 words analyzing the writer’s ideas about “${mainWord}” and giving a supported opinion.`,
+        language: "The writer argues that, This suggests that, However, In contrast, As a result, To a large extent, In conclusion",
+        starters: [
+          "The main purpose of the text is to…",
+          "The writer suggests that…",
+          "One strong argument is…",
+          "However, it could also be argued that…",
+          "In conclusion,…"
+        ]
+      },
+      free: {
+        task: "Write an opinion paragraph of 100–130 words about an issue related to the text.",
+        ideas: [
+          "A problem connected to the topic",
+          "Two possible solutions",
+          "Advantages and disadvantages",
+          "Your final recommendation"
+        ]
+      }
+    }
+  };
+
+  const writing = writingTasks[level];
+
+  document.getElementById("guidedTask").innerText = writing.guided.task;
+  document.getElementById("guidedLanguage").innerText = writing.guided.language;
+
+  document.getElementById("guidedStarters").innerHTML =
+    writing.guided.starters.map(starter => `<li>${starter}</li>`).join("");
+
+  document.getElementById("freeTask").innerText = writing.free.task;
+
+  document.getElementById("freeIdeas").innerHTML =
+    writing.free.ideas.map(idea => `<li>${idea}</li>`).join("");
+
+  document.getElementById("answers").innerHTML = `
+    <p><strong>A.</strong> Answers will vary. Accept reasonable responses based on the text.</p>
+    <p><strong>B.</strong> Teachers should check each statement against the reading text.</p>
+    <p><strong>C.</strong> Meanings should be discussed in class or completed using a dictionary.</p>
+    <p><strong>D.</strong> Target words: ${gapWords.join(", ")}</p>
+    <p><strong>E.</strong> Students’ guided writing will vary. Check that they use ideas from the text and the suggested language.</p>
+    <p><strong>F.</strong> Students’ free writing will vary. Assess content, organization, language, and effort.</p>
+  `;
+
+  document.getElementById("worksheet").style.display = "block";
+
+  window.scrollTo({
+    top: document.getElementById("worksheet").offsetTop,
+    behavior: "smooth"
+  });
+}
+</script>
+
+</body>
+</html>
